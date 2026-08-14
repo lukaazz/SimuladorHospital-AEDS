@@ -19,11 +19,11 @@ public class CelulasGrid {
         this.acessorio = acessorio;
     }
 
-    public Celula getTipo_celula() {
+    public Celula getTipoCelula() {
         return tipo_celula;
     }
 
-    public void setTipo_celula(Celula tipo_celula) {
+    public void setTipoCelula(Celula tipo_celula) {
         this.tipo_celula = tipo_celula;
     }
 
