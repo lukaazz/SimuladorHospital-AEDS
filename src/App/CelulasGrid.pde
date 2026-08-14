@@ -1,13 +1,13 @@
 public class CelulasGrid {
     PImage fundo = new PImage();
     PImage acessorio = new PImage();
-    Celula tipo_celula;
+    Celulas tipo_celula;
 
     public PImage getFundo() {
         return fundo;
     }
 
-    public Pimage setFundo(PImage fundo) {
+    public void setFundo(PImage fundo) {
         this.fundo = fundo;
     }
 
@@ -15,15 +15,15 @@ public class CelulasGrid {
         return acessorio;
     }
 
-    public PImage setAcessorio(PImage acessorio) {
+    public void setAcessorio(PImage acessorio) {
         this.acessorio = acessorio;
     }
 
-    public Celula getTipoCelula() {
+    public Celulas getTipoCelula() {
         return tipo_celula;
     }
 
-    public void setTipoCelula(Celula tipo_celula) {
+    public void setTipoCelula(Celulas tipo_celula) {
         this.tipo_celula = tipo_celula;
     }
 
