@@ -9,11 +9,13 @@ public class Paciente {
     private double[] caracteristicas;
     private boolean prioridade;
 
+    private static final Random rand = new Random();
+
     public Paciente(String id) {
         this.id = id;
         this.caracteristicas = gerarCaracteristicasAleatorias();
 
-        if(random(0, 1) < 0.25) {
+        if(rand.nextDouble() < 0.25) {
             prioridade = true;
         } else {
             prioridade = false;
@@ -21,7 +23,7 @@ public class Paciente {
     }
 
     private double[] gerarCaracteristicasAleatorias() {
-        Random rand = new Random();
+        
         double[] c = new double[4];
 
         // geração das caracteriticas aleatorias
