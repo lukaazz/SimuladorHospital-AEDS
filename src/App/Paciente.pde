@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Paciente {
     
     public static final int SATURACAO = 0;
@@ -9,7 +11,7 @@ public class Paciente {
     private double[] caracteristicas;
     private boolean prioridade;
 
-    private static final Random rand = new Random();
+    private final Random rand = new Random();
 
     public Paciente(String id) {
         this.id = id;
