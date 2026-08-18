@@ -7,10 +7,17 @@ public class Paciente {
 
     private String id;
     private double[] caracteristicas;
+    private boolean prioridade;
 
     public Paciente(String id) {
         this.id = id;
         this.caracteristicas = gerarCaracteristicasAleatorias();
+
+        if(random(0, 1) < 0.25) {
+            prioridade = true;
+        } else {
+            prioridade = false;
+        }
     }
 
     private double[] gerarCaracteristicasAleatorias() {
