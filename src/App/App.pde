@@ -12,6 +12,7 @@ PImage medico_img = new PImage();
 PImage totem_img = new PImage();
 
 CelulasGrid[][] grid = new CelulasGrid[tamanho][tamanho];
+Cadeira[] cadeiras = new Cadeira[30];
 
 void setup() {
     size(800, 800);

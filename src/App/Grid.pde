@@ -126,6 +126,8 @@ void inicializarGrid() {
         }
     }
 
+    int cadeiraIndex = 0;
+
     for(i = 0; i < tamanho; i++) {
         for(j = 0; j < tamanho; j++) {
 
@@ -143,6 +145,8 @@ void inicializarGrid() {
                 case a:
                     grid[i][j].setFundo(chao_img);
                     grid[i][j].setAcessorio(cadeira_img);
+                    cadeiras[cadeiraIndex] = new Cadeira(j, i);
+                    cadeiraIndex++;
                     break;
 
                 case m:
