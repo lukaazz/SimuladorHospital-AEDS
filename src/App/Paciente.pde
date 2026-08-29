@@ -10,6 +10,7 @@ public class Paciente {
     private String id;
     private double[] caracteristicas;
     private boolean prioridade;
+    private String senha;
 
     private final Random rand = new Random();
 
@@ -39,5 +40,13 @@ public class Paciente {
 
     public double getCaracteristica(int indice) {
         return caracteristicas[indice];
+    }
+    
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getSenha() {
+        return senha;
     }
 }
