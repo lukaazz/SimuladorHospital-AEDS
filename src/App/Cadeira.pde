@@ -1,11 +1,11 @@
 public class Cadeira {
     private int x, y;
-    private boolean ocupada;
+    EstadoCadeira estado;
     
     public Cadeira(int x, int y) {
         this.x = x;
         this.y = y;
-        this.ocupada = false;
+        EstadoCadeira estado = EstadoCadeira.LIVRE;
     }
 
     public int getX() {
@@ -16,11 +16,11 @@ public class Cadeira {
         return y;
     }
 
-    public boolean estaOcupada() {
-        return ocupada;
+    public EstadoCadeira getEstado() {
+        return estado;
     }
 
-    public void setOcupada(boolean ocupada) {
-        this.ocupada = ocupada;
+    public void setEstado(EstadoCadeira estado) {
+        this.estado = estado;
     }
 }
