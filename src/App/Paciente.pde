@@ -15,6 +15,11 @@ public class Paciente {
 
     private final Random rand = new Random();
 
+    private int linha;
+    private int coluna;
+    private int destinoLinha;
+    private int destinoColuna;
+
     public Paciente(String id) {
         this.id = id;
         this.caracteristicas = gerarCaracteristicasAleatorias();
@@ -49,5 +54,38 @@ public class Paciente {
 
     public String getSenha() {
         return senha;
+    }
+
+    public int getLinha(){
+        return linha;
+    }
+
+    public int getColuna(){
+        return coluna;
+    }
+
+    public void setPosicao(int l, int c){
+        this.linha = l;
+        this.coluna = c;
+    }
+
+    public void setDestino(int l, int c){
+        this.destinoLinha = l;
+        this.destinoColuna = c;
+    }
+
+    public int getDestinoLinha(){
+        return destinoLinha;
+    }
+
+    public int getDestinoColuna(){
+        return destinoColuna;
+    }
+
+    public boolean chegouAoDestino(){
+        if(this.linha == this.destinoLinha && this.coluna == this.destinoColuna){
+            return true;
+        }
+        return false;
     }
 }
