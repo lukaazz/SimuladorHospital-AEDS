@@ -3,11 +3,11 @@ public class NoManchester {
     private int indiceCaracteristica;
     private double valorLimite;
     private boolean ehFolha;
-    private color corFolha;
+    private CoresPrioridades corFolha;
 
 
     // dois construtores diferentes para os estados possíveis de um nó
-    public NoManchester(color cor) {
+    public NoManchester(CoresPrioridades cor) {
         this.corFolha = cor;
         this.ehFolha = true;
     }
@@ -24,7 +24,7 @@ public class NoManchester {
     }
 
     // para os nós que são folhas, retorna a cor dela 
-    public color getCorFolha() throws IllegalStateException {
+    public CoresPrioridades getCorFolha() throws IllegalStateException {
         
         if(ehFolha) {
             return corFolha;
