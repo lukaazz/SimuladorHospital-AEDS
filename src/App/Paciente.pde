@@ -9,8 +9,9 @@ public class Paciente {
 
     private String id;
     private double[] caracteristicas;
-    private boolean prioridade;
+    private boolean preferencial;
     private String senha;
+    private color corPrioridade;
 
     private final Random rand = new Random();
 
@@ -19,9 +20,9 @@ public class Paciente {
         this.caracteristicas = gerarCaracteristicasAleatorias();
 
         if(rand.nextDouble() < 0.25) {
-            prioridade = true;
+            preferencial = true;
         } else {
-            prioridade = false;
+            preferencial = false;
         }
     }
 

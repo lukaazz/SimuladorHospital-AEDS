@@ -2,6 +2,8 @@ int tamanho = 24;
 int largura_celula;
 int altura_celula;
 
+NoManchester[] ArvoreManchester;
+
 PImage chao_img = new PImage();
 PImage parede_img = new PImage();
 PImage cadeira_img = new PImage();
@@ -22,6 +24,17 @@ void setup() {
 
     inicializarImagens();
     inicializarGrid();
+
+
+    /* 
+    
+    logica de manchester:
+        -> se existe um paciente no totem de atendimento  
+        -> chama metodo que passa pela arvore e retorna uma cor  
+        -> cor vira atributo de paciente
+        -> paciente vai pra fila de espera da consulta
+        
+    */
 }
 
 void draw() {

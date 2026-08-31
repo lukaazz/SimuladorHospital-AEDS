@@ -23,6 +23,15 @@ public class NoManchester {
         return ehFolha;
     }
 
+    // para os nós que são folhas, retorna a cor dela 
+    public color getCorFolha() throws IllegalStateException {
+        
+        if(ehFolha) {
+            return corFolha;
+        } else {
+            throw new IllegalStateException();
+        }
+    }
 
     // para os nós que não são folhas, faz a comparação entre os o valor e o limite e retorna se maior
     public boolean ehMaiorLimite(Paciente paciente) throws IllegalStateException {
@@ -35,13 +44,5 @@ public class NoManchester {
     }
 
     
-    // para os nós que são folhas, retorna a cor dela 
-    public color getCorFolha() throws IllegalStateException {
-        
-        if(ehFolha) {
-            return corFolha;
-        } else {
-            throw new IllegalStateException();
-        }
-    }
+    
 }
