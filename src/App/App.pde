@@ -19,8 +19,7 @@ Cadeira[] cadeiras = new Cadeira[30];
 void setup() {
     size(800, 800);
 
-    largura_celula = width / tamanho;
-    altura_celula = height / tamanho;
+    grid = new Grid();
 
     inicializarImagens();
     inicializarGrid();
@@ -38,5 +37,19 @@ void setup() {
 }
 
 void draw() {
-    desenharGrid();
+    background(255);
+
+    if (!inicializado) {
+
+        try {
+            //vai ser chamado sempre que um mapa diferente for escolhido, para resetar o grid e desenhar o novo mapa
+            grid.inicializarGrid("data/mapa1.txt");
+
+        } catch (MapaNaoFormatadoException e) {
+            println(e.getMessage());
+        }
+        inicializado = true;
+    }
+
+    grid.desenharGrid();
 }
