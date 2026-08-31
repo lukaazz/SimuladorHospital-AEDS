@@ -36,9 +36,13 @@ public class GerenciadorMovimento{
         for(int i=0; i<intencoes.length; i++){
             intencoes[i] = calcularIntencao(pacientesAtivos[i]);
         }
+
+        boolean[] podeMover = resolverConflitos(pacientesAtivos, intencoes);
+        aplicarMovimentos(pacientesAtivos, intencoes, podeMover);
+
     }
 
-    void resolverConflitos(Paciente[] pacientesAtivos, Coordenada[] intencoes) {
+    boolean[] resolverConflitos(Paciente[] pacientesAtivos, Coordenada[] intencoes) {
         boolean[] podeMover = new boolean[pacientesAtivos.length];
         for(int i=0; i<pacientesAtivos.length; i++){ 
             if(intencoes[i] != null){
@@ -91,6 +95,18 @@ public class GerenciadorMovimento{
                         }
                     }
                 }
+            }
+        }
+        return podeMover;
+    }
+
+    void aplicarMovimentos(Paciente[] pacientesAtivos, Coordenada[] intencoes, boolean[] podeMover){
+        for(int i=0; i<pacientesAtivos.length; i++){
+            if(podeMover[i]){
+                ocupacao[pacientesAtivos[i].getLinha()][pacientesAtivos[i].getColuna()] = null; //desocupa a celula
+                Coordenada alvo = intencoes[i]; //pega as coordenadas de pra onde quer ir
+                pacientesAtivos[i].setPosicao(alvo.getL(), alvo.getC()); //coloca o posicao no paciente
+                ocupacao[alvo.getL()][alvo.getC()] = pacientesAtivos[i]; //coloca o paciente na matriz ocupacao
             }
         }
     }
