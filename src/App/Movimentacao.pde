@@ -36,9 +36,13 @@ public class GerenciadorMovimento{
         for(int i=0; i<intencoes.length; i++){
             intencoes[i] = calcularIntencao(pacientesAtivos[i]);
         }
+
+        boolean[] podeMover = resolverConflitos(pacientesAtivos, intencoes);
+        aplicarMovimentos(pacientesAtivos, intencoes, podeMover);
+
     }
 
-    void resolverConflitos(Paciente[] pacientesAtivos, Coordenada[] intencoes) {
+    boolean[] resolverConflitos(Paciente[] pacientesAtivos, Coordenada[] intencoes) {
         boolean[] podeMover = new boolean[pacientesAtivos.length];
         for(int i=0; i<pacientesAtivos.length; i++){ 
             if(intencoes[i] != null){
@@ -58,26 +62,33 @@ public class GerenciadorMovimento{
             }
         }
 
-        for(int i=0; i<pacientesAtivos.length; i++){ //um quer ir pra onde ja tem outro
-            if(podeMover[i]){
-                Coordenada alvo = intencoes[i]; //guarda as coordenadas da casa que queremos ir
-                Paciente ocupante = ocupacao[alvo.getL()][alvo.getC()]; //pega quem ta no lugar que queremos ir
+        boolean mudou = true; //isso resolve o seguinte problema:
+        //A quer ir pra célula de B, B quer ir pra célula de C, e C não vai se mover
+        while(mudou){
+            mudou = false;
+            for(int i=0; i<pacientesAtivos.length; i++){ //um quer ir pra onde ja tem outro
+                if(podeMover[i]){
+                    Coordenada alvo = intencoes[i]; //guarda as coordenadas da casa que queremos ir
+                    Paciente ocupante = ocupacao[alvo.getL()][alvo.getC()]; //pega quem ta no lugar que queremos ir
 
-                if(ocupante != null){  //se tem alguem la
-                    if(ocupante != pacientesAtivos[i]){ //se nao é voce mesmo
-                        int indiceOcup = -1; 
-                        for(int k=0; k<pacientesAtivos.length; k++){ 
-                            if(pacientesAtivos[k] == ocupante){ //acha quem é o paciente que ta la
-                                indiceOcup = k;
+                    if(ocupante != null){  //se tem alguem la
+                        if(ocupante != pacientesAtivos[i]){ //se nao é voce mesmo
+                            int indiceOcup = -1; 
+                            for(int k=0; k<pacientesAtivos.length; k++){ 
+                                if(pacientesAtivos[k] == ocupante){ //acha quem é o paciente que ta la
+                                    indiceOcup = k;
+                                }
                             }
-                        }
-                        if(!podeMover[indiceOcup]){ //olha se ele vai sair de la
-                            podeMover[i] = false; //se ele nao vai, voce nao move
+                            if(!podeMover[indiceOcup]){ //olha se ele vai sair de la
+                                podeMover[i] = false; //se ele nao vai, voce nao move
+                                mudou = true;
+                            }
                         }
                     }
                 }
             }
         }
+        
 
         for(int i=0; i<pacientesAtivos.length; i++){ //se um quer ir pro lugar do outro
             for(int j=0; j<pacientesAtivos.length; j++){
@@ -91,6 +102,18 @@ public class GerenciadorMovimento{
                         }
                     }
                 }
+            }
+        }
+        return podeMover;
+    }
+
+    void aplicarMovimentos(Paciente[] pacientesAtivos, Coordenada[] intencoes, boolean[] podeMover){
+        for(int i=0; i<pacientesAtivos.length; i++){
+            if(podeMover[i]){
+                ocupacao[pacientesAtivos[i].getLinha()][pacientesAtivos[i].getColuna()] = null; //desocupa a celula
+                Coordenada alvo = intencoes[i]; //pega as coordenadas de pra onde quer ir
+                pacientesAtivos[i].setPosicao(alvo.getL(), alvo.getC()); //coloca o posicao no paciente
+                ocupacao[alvo.getL()][alvo.getC()] = pacientesAtivos[i]; //coloca o paciente na matriz ocupacao
             }
         }
     }
