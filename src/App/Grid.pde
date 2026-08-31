@@ -12,6 +12,7 @@ public class Grid {
     PImage medico_img = new PImage();
     PImage totem_img = new PImage();
 
+    
     CelulasGrid[][] grid;
     //colocar qnt_livres de cadeiras
     Cadeira[] cadeiras;
@@ -252,11 +253,39 @@ public class Grid {
         }
     }
 
-    public Cadeira[] ordenarCadeirasPorDistancia(Cadeira[] lista, int[][] distancias) {
+    public Cadeira[] ordenarCadeirasPorDistancia(int[][] distancias) {
         Cadeira[] cadeirasLivres = filtrarCadeirasLivres();
         int n = cadeirasLivres.length;
 
-        //TERMINAR!!
+        for(int i = 0; i < n; i++) {
+            int menor_indice = i;
+            int menor_distancia = distanciaReal(cadeirasLivres[i], distancias);
+
+            for(int j = i + 1; j < n; j++) {
+                int distanciaJ = distanciaReal(cadeirasLivres[j], distancias);
+
+                if(distanciaJ < menor_distancia) {
+                    menor_indice = j;
+                    menor_distancia = distanciaJ;
+                }
+            }
+
+            Cadeira temporaria = cadeirasLivres[i];
+            cadeirasLivres[i] = cadeirasLivres[menor_indice];
+            cadeirasLivres[menor_indice] = temporaria;
+        }
+
+        return cadeirasLivres;
+    }
+
+    public int distanciaReal(Cadeira cadeira, int[][] distancias) {
+        int distancia_real = distancias[cadeira.getY()][cadeira.getX()];
+
+        if(distancia_real == -1) {
+            distancia_real = Integer.MAX_VALUE;
+        }
+
+        return distancia_real;
     }
 
     public Cadeira[] filtrarCadeirasLivres() {
