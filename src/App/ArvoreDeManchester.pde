@@ -14,20 +14,34 @@ public static class ArvoreDeManchester {
 
     public static color decideCorPrioridade(Paciente paciente) {
 
-        if(arvoreManchester[0].ehMaiorLimite(paciente)) { //CONSICIENCIA
-            return CoresPrioridades.VERMELHO;
+        int i = 0;
 
-        } else if (!arvoreManchester[2].ehMaiorLimite(paciente)) { //SATURAÇÃO
-            return CoresPrioridades.LARANJA;
-
-        } else if (arvoreManchester[6].ehMaiorLimite(paciente)) { // NIVEL DOR
-            return CoresPrioridades.AMARELO;
-
-        } else if (arvoreManchester[14].ehMaiorLimite(paciente)) { // TEMPERATURA
-            return CoresPrioridades.VERDE;
-        
-        } else {
-            return CoresPrioridades.AZUL;
+        while(!(arvoreManchester[i].getEhFolha())) {
+            if(arvoreManchester[i].ehMaiorLimite(paciente)) {
+                i = (2 * i) + 1;
+            } else {
+                i = (2 * i) + 2;
+            }
         }
+        return arvoreManchester[i].getCorFolha();
     }
+
+
 }
+
+
+// if(arvoreManchester[0].ehMaiorLimite(paciente)) { //CONSICIENCIA
+        //     return CoresPrioridades.VERMELHO;
+
+        // } else if (!arvoreManchester[2].ehMaiorLimite(paciente)) { //SATURAÇÃO
+        //     return CoresPrioridades.LARANJA;
+
+        // } else if (arvoreManchester[6].ehMaiorLimite(paciente)) { // NIVEL DOR
+        //     return CoresPrioridades.AMARELO;
+
+        // } else if (arvoreManchester[14].ehMaiorLimite(paciente)) { // TEMPERATURA
+        //     return CoresPrioridades.VERDE;
+        
+        // } else {
+        //     return CoresPrioridades.AZUL;
+        // }
