@@ -13,7 +13,7 @@ public class Grid {
     PImage totem_img = new PImage();
 
     CelulasGrid[][] grid;
-    //colocar contador de cadeiras
+    //colocar qnt_livres de cadeiras
     Cadeira[] cadeiras;
 
     void inicializarImagens() {
@@ -147,18 +147,18 @@ public class Grid {
 
         cadeiras = new Cadeira[cadeiraIndex];
 
-        int contador_temporario = 0;
+        int qnt_livres_temporario = 0;
         for(i = 0; i < altura; i++) {
             for(j = 0; j < largura; j++) {
                 if (grid[i][j].getTipoCelula() == Celulas.a) {
-                    cadeiras[contador_temporario] = new Cadeira(j, i);
-                    contador_temporario++;
+                    cadeiras[qnt_livres_temporario] = new Cadeira(j, i);
+                    qnt_livres_temporario++;
                 }
             }
         }
     }
 
-    int contadorcadeiras = 0;
+    int qnt_livrescadeiras = 0;
 
     void desenharGrid() {
         int i, j;
@@ -250,6 +250,34 @@ public class Grid {
                 }
             }
         }
+    }
+
+    public Cadeira[] ordenarCadeirasPorDistancia(Cadeira[] lista, int[][] distancias) {
+        Cadeira[] cadeirasLivres = filtrarCadeirasLivres();
+        int n = cadeirasLivres.length;
+
+        //TERMINAR!!
+    }
+
+    public Cadeira[] filtrarCadeirasLivres() {
+        int qnt_livres = 0;
+        int contador = 0;
+
+        for (int i = 0; i < cadeiras.length; i++) {
+            if (cadeiras[i].getEstado() == EstadoCadeira.LIVRE) {
+                qnt_livres++;
+            }
+        }
+
+        Cadeira[] cadeirasLivres = new Cadeira[qnt_livres];
+
+        for (int i = 0; i < cadeiras.length; i++) {
+            if (cadeiras[i].getEstado() == EstadoCadeira.LIVRE) {
+                cadeirasLivres[contador] = cadeiras[i];
+                contador++;
+            }
+        }
+        return cadeirasLivres;
     }
 
     public void resetarGrid() {
