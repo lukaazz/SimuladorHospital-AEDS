@@ -51,3 +51,51 @@ int[][] calcularWavefront(int destinoLinha, int destinoColuna, char[][] mapa){
     }
     return distancias;
 }
+
+public Coordenada[] vizinhosOrdenadosPorDistancia(int linha, int coluna, int[][] distancias){
+    int numLinhas = distancias.length; 
+    int numColunas = distancias[0].length;
+
+    int[] dLinha = {-1, 1, 0, 0};
+    int[] dColuna = {0, 0, -1, 1};
+
+    Coordenada[] candidatos = new Coordenada[4]; //4 vizinhos em volta
+    int[] valores = new int[4]; //valor da onda pra ordenar o mais perto do destino
+    int total = 0; //conta vizinhos validos
+
+    for(int i=0; i<=3; i++){
+        int novoL = linha + dLinha[i];
+        int novoC = coluna + dColuna[i]; //serve pra analisar as 4 celulas vizinhas
+
+        if(novoL < 0 || novoL >= numLinhas || novoC < 0 || novoC >= numColunas){
+            continue; //se for invalido pula
+        }
+        int valor = distancias[novoL][novoC]; 
+        if(valor < 0){
+            continue; //se for -1 invalido do msm jeito pula
+        }
+        candidatos[total] = new Coordenada(novoL, novoC);
+        valores[total] = valor;
+        total++;
+    }
+
+    for (int i = 1; i < total; i++) {
+        int valTemp = valores[i];
+        Coordenada candTemp = candidatos[i];
+
+        int j = i - 1;
+        while (j >= 0 && valores[j] > valTemp) {
+            valores[j + 1] = valores[j];
+            candidatos[j + 1] = candidatos[j];
+            j--;
+        }
+
+        valores[j + 1] = valTemp;
+        candidatos[j + 1] = candTemp;
+    }
+    Coordenada[] resultado = new Coordenada[total];
+    for(int i=0; i<total; i++){
+        resultado[i] = candidatos[i];
+    }
+    return resultado;
+}
