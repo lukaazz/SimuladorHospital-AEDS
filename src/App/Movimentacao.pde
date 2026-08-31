@@ -2,8 +2,8 @@ public class GerenciadorMovimento{
     private char[][] mapaBase;
     private Paciente[][] ocupacao; //mapinha que mostra onde ta cada paciente
 
-    int numLinhas;
-    int numColunas;
+    private int numLinhas;
+    private int numColunas;
 
     public GerenciadorMovimento(char[][] mapaBase){
         this.mapaBase = mapaBase;
@@ -39,7 +39,59 @@ public class GerenciadorMovimento{
     }
 
     void resolverConflitos(Paciente[] pacientesAtivos, Coordenada[] intencoes) {
-        
-    }
+        boolean[] podeMover = new boolean[pacientesAtivos.length];
+        for(int i=0; i<pacientesAtivos.length; i++){ 
+            if(intencoes[i] != null){
+                podeMover[i] = true; //colocando todos que tem inteçao de mover pra poder mover
+            }
+        }
 
+        for(int i=0; i<pacientesAtivos.length; i++){ //dois querem ir pro mesmo lugar
+            for(int j=0; j<pacientesAtivos.length; j++){
+                if(i<j){ //pra naao comparar duas vezes 
+                    if(intencoes[i] != null && intencoes[j] != null){  
+                        if(intencoes[i].equals(intencoes[j])){
+                            podeMover[j] = false; //o primeiro do array move
+                        }
+                    }
+                }
+            }
+        }
+
+        for(int i=0; i<pacientesAtivos.length; i++){ //um quer ir pra onde ja tem outro
+            if(podeMover[i]){
+                Coordenada alvo = intencoes[i]; //guarda as coordenadas da casa que queremos ir
+                Paciente ocupante = ocupacao[alvo.getL()][alvo.getC()]; //pega quem ta no lugar que queremos ir
+
+                if(ocupante != null){  //se tem alguem la
+                    if(ocupante != pacientesAtivos[i]){ //se nao é voce mesmo
+                        int indiceOcup = -1; 
+                        for(int k=0; k<pacientesAtivos.length; k++){ 
+                            if(pacientesAtivos[k] == ocupante){ //acha quem é o paciente que ta la
+                                indiceOcup = k;
+                            }
+                        }
+                        if(!podeMover[indiceOcup]){ //olha se ele vai sair de la
+                            podeMover[i] = false; //se ele nao vai, voce nao move
+                        }
+                    }
+                }
+            }
+        }
+
+        for(int i=0; i<pacientesAtivos.length; i++){ //se um quer ir pro lugar do outro
+            for(int j=0; j<pacientesAtivos.length; j++){
+                if(i < j){
+                    if(podeMover[i] && podeMover[j]){
+                        if(intencoes[i].equals(new Coordenada(pacientesAtivos[j].getLinha(), pacientesAtivos[j].getColuna()))){
+                            if(intencoes[j].equals(new Coordenada(pacientesAtivos[i].getLinha(), pacientesAtivos[i].getColuna()))){
+                                podeMover[i] = false;
+                                podeMover[j] = false; //ninguem move
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
