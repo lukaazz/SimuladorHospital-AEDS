@@ -5,7 +5,7 @@ public class Cadeira {
     public Cadeira(int x, int y) {
         this.x = x;
         this.y = y;
-        EstadoCadeira estado = EstadoCadeira.LIVRE;
+        this.estado = EstadoCadeira.LIVRE;
     }
 
     public int getX() {

@@ -14,8 +14,13 @@ public class Grid {
 
     
     CelulasGrid[][] grid;
-    //colocar qnt_livres de cadeiras
     Cadeira[] cadeiras;
+
+    boolean tem_gerador;
+    boolean tem_removedor;
+    boolean tem_medico;
+    boolean tem_enfermeira;
+    boolean tem_totem;
 
     void inicializarImagens() {
         chao_img = loadImage("tilefloor.png");
@@ -42,6 +47,12 @@ public class Grid {
             throw new MapaNaoFormatadoException();
         }
 
+        //se a qnt de linhas nao bater com o que foi declarado na primeira linha,
+        //lanca a excecao
+        if(altura != linhasMapa.length - 1) {
+            throw new MapaNaoFormatadoException();
+        }
+
         grid = new CelulasGrid[altura][largura];
         largura_celula = width / largura;
         altura_celula = height / altura;
@@ -57,6 +68,8 @@ public class Grid {
             //1a linha eh o tamanho do mapa
             String linha = linhasMapa[i + 1];
 
+            //se a qnt de colunas nao bater com o que foi declarado na primeira linha,
+            //lanca a excecao
             if (linha.length() != largura) {
                 throw new MapaNaoFormatadoException();
             }
@@ -121,29 +134,49 @@ public class Grid {
                     case m:
                         grid[i][j].setFundo(chao_img);
                         grid[i][j].setAcessorio(medico_img);
+                        tem_medico = true;
                         break;
 
                     case e:
                         grid[i][j].setFundo(chao_img);
                         grid[i][j].setAcessorio(enfermeira_img);
+                        tem_enfermeira = true;
                         break;
 
                     case t:
                         grid[i][j].setFundo(chao_img);
                         grid[i][j].setAcessorio(totem_img);
+                        tem_totem = true;
                         break;
 
                     case g:
                         grid[i][j].setFundo(chao_img);
                         grid[i][j].setAcessorio(gerador_img);
+
+                        if(tem_gerador) {
+                            throw new MapaNaoFormatadoException();
+                        } else {
+                            tem_gerador = true;
+                        }
                         break;
 
                     case r:
                         grid[i][j].setFundo(chao_img);
                         grid[i][j].setAcessorio(removedor_img);
+                        
+                        if(tem_removedor) {
+                            throw new MapaNaoFormatadoException();
+                        } else {
+                            tem_removedor = true;
+                        }
+
                         break;
                 }
             }
+        }
+
+        if(!tem_gerador || !tem_removedor || !tem_medico || !tem_enfermeira || !tem_totem) {
+            throw new MapaNaoFormatadoException();
         }
 
         cadeiras = new Cadeira[cadeiraIndex];
@@ -254,9 +287,11 @@ public class Grid {
     }
 
     public Cadeira[] ordenarCadeirasPorDistancia(int[][] distancias) {
+        //pega so as cadeiras livres pra ordenar
         Cadeira[] cadeirasLivres = filtrarCadeirasLivres();
         int n = cadeirasLivres.length;
 
+        //ordenando com insertion sort
         for(int i = 0; i < n; i++) {
             int menor_indice = i;
             int menor_distancia = distanciaReal(cadeirasLivres[i], distancias);
@@ -278,6 +313,8 @@ public class Grid {
         return cadeirasLivres;
     }
 
+    //verifica se nao eh impossivel chegar
+    //util para a ordenacao pois, se for impossivel chegar, coloca com o maior numero inteiro possivel
     public int distanciaReal(Cadeira cadeira, int[][] distancias) {
         int distancia_real = distancias[cadeira.getY()][cadeira.getX()];
 
@@ -288,6 +325,7 @@ public class Grid {
         return distancia_real;
     }
 
+    //retorna um array com as cadeiras livres
     public Cadeira[] filtrarCadeirasLivres() {
         int qnt_livres = 0;
         int contador = 0;
@@ -309,6 +347,7 @@ public class Grid {
         return cadeirasLivres;
     }
 
+    //chamar quando um novo mapa for escolhido
     public void resetarGrid() {
         grid = null;
         cadeiras = null;
@@ -316,5 +355,10 @@ public class Grid {
         altura = 0;
         largura_celula = 0;
         altura_celula = 0;
+        tem_gerador = false;
+        tem_removedor = false;
+        tem_medico = false;
+        tem_enfermeira = false;
+        tem_totem = false;
     }
 }
