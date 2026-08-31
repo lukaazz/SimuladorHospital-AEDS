@@ -48,13 +48,12 @@ public class ListaPacientes {
             atual.setProximo(novo);
         }
         tamanho++;
-        }
     }
 
     public boolean removerPorId(String id){
-        if (vazia())
+        if (vazia()){
         return false;
-
+        }
         if (inicio.getPaciente().getId().equals(id)) {
             inicio = inicio.getProximo();
             tamanho--;
@@ -74,3 +73,4 @@ public class ListaPacientes {
 
         return false;
     }
+}
