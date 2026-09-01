@@ -28,7 +28,7 @@ public static class FilasPreferencial {
             preferenciaisAtendidos = 0;
             return filas[NORMAL].removerPrimeiro();
         } else {
-            return filas[PREFERENCIAL].removerPrimeiro();
+            if(!(filas[PREFERENCIAL].vazia())) return filas[PREFERENCIAL].removerPrimeiro();
         }
     }
 }
