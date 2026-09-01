@@ -1,26 +1,32 @@
 public class Grid {
-    int largura, altura;
-    int largura_celula;
-    int altura_celula;
+    private int largura, altura;
+    private int largura_celula;
+    private int altura_celula;
 
-    PImage chao_img = new PImage();
-    PImage parede_img = new PImage();
-    PImage cadeira_img = new PImage();
-    PImage gerador_img = new PImage();
-    PImage removedor_img = new PImage();
-    PImage enfermeira_img = new PImage();
-    PImage medico_img = new PImage();
-    PImage totem_img = new PImage();
-
+    private Gerador gerador;
+    private Totem totem; //decidi colocar apenas um totem no mapa, apesar de nao ser explicito nas instrucoes
+    private Removedor removedor;
+    private Medico[] medico;
+    private Enfermeira[] enfermeira;
     
-    CelulasGrid[][] grid;
-    Cadeira[] cadeiras;
+    private CelulasGrid[][] grid;
+    private Cadeira[] cadeiras;
+    private char[][] mapaChar;
 
-    boolean tem_gerador;
-    boolean tem_removedor;
-    boolean tem_medico;
-    boolean tem_enfermeira;
-    boolean tem_totem;
+    private boolean tem_gerador;
+    private boolean tem_removedor;
+    private boolean tem_medico;
+    private boolean tem_enfermeira;
+    private boolean tem_totem;
+
+    private PImage chao_img = new PImage();
+    private PImage parede_img = new PImage();
+    private PImage cadeira_img = new PImage();
+    private PImage gerador_img = new PImage();
+    private PImage removedor_img = new PImage();
+    private PImage enfermeira_img = new PImage();
+    private PImage medico_img = new PImage();
+    private PImage totem_img = new PImage();
 
     void inicializarImagens() {
         chao_img = loadImage("tilefloor.png");
@@ -35,6 +41,8 @@ public class Grid {
 
     void inicializarGrid(String caminhoMapa) throws MapaNaoFormatadoException {
         int i, j;
+        int contadorMedicos = 0, contadorEnfermeiras = 0, contadorCadeiras = 0;
+        int qnt_medicos = 0, qnt_enfermeiras = 0, qnt_cadeiras = 0;
         
         String[] linhasMapa = loadStrings(caminhoMapa);
 
@@ -63,6 +71,8 @@ public class Grid {
             }
         }
 
+        mapaChar = new char[altura][largura];
+
         for(i = 0; i < altura; i++) {
 
             //1a linha eh o tamanho do mapa
@@ -77,39 +87,53 @@ public class Grid {
             for(j = 0; j < largura; j++) {
         
                 char c = linha.charAt(j);
+                mapaChar[i][j] = c;
                 
                 switch (c) {
                     case '#':
                         grid[i][j].setTipoCelula(Celulas.p);
                         break;
+
                     case '.':
                         grid[i][j].setTipoCelula(Celulas.c);
                         break;
+
                     case 'A':
                         grid[i][j].setTipoCelula(Celulas.a);
+                        qnt_cadeiras++;
                         break;
+
                     case 'M':
                         grid[i][j].setTipoCelula(Celulas.m);
+                        qnt_medicos++;
                         break;
+
                     case 'E':
                         grid[i][j].setTipoCelula(Celulas.e);
+                        qnt_enfermeiras++;
                         break;
+
                     case 'T':
                         grid[i][j].setTipoCelula(Celulas.t);
                         break;
+
                     case 'G':
                         grid[i][j].setTipoCelula(Celulas.g);
                         break;
+
                     case 'R':
                         grid[i][j].setTipoCelula(Celulas.r);
                         break;
+
                     default:
                         throw new MapaNaoFormatadoException();
                 }
             }
         }
 
-        int cadeiraIndex = 0;
+        medico = new Medico[qnt_medicos];
+        enfermeira = new Enfermeira[qnt_enfermeiras];
+        cadeiras = new Cadeira[qnt_cadeiras];
 
         for(i = 0; i < altura; i++) {
             for(j = 0; j < largura; j++) {
@@ -128,25 +152,41 @@ public class Grid {
                     case a:
                         grid[i][j].setFundo(chao_img);
                         grid[i][j].setAcessorio(cadeira_img);
-                        cadeiraIndex++;
+
+                        cadeiras[contadorCadeiras] = new Cadeira(i, j);
+                        contadorCadeiras++;
                         break;
 
                     case m:
                         grid[i][j].setFundo(chao_img);
                         grid[i][j].setAcessorio(medico_img);
+
+                        medico[contadorMedicos] = new Medico(i, j);
                         tem_medico = true;
+                        contadorMedicos++;
                         break;
 
                     case e:
                         grid[i][j].setFundo(chao_img);
                         grid[i][j].setAcessorio(enfermeira_img);
+
+                        enfermeira[contadorEnfermeiras] = new Enfermeira(i, j);
                         tem_enfermeira = true;
+                        contadorEnfermeiras++;
                         break;
 
                     case t:
                         grid[i][j].setFundo(chao_img);
                         grid[i][j].setAcessorio(totem_img);
-                        tem_totem = true;
+                        
+                        if(tem_totem) {
+                            throw new MapaNaoFormatadoException();
+                        } else {
+                            tem_totem = true;
+                        }
+
+                        totem = new Totem(i, j);
+
                         break;
 
                     case g:
@@ -158,6 +198,7 @@ public class Grid {
                         } else {
                             tem_gerador = true;
                         }
+                        gerador = new Gerador(i, j);
                         break;
 
                     case r:
@@ -169,7 +210,7 @@ public class Grid {
                         } else {
                             tem_removedor = true;
                         }
-
+                        removedor = new Removedor(i, j);
                         break;
                 }
             }
@@ -179,16 +220,8 @@ public class Grid {
             throw new MapaNaoFormatadoException();
         }
 
-        cadeiras = new Cadeira[cadeiraIndex];
-
-        int qnt_livres_temporario = 0;
-        for(i = 0; i < altura; i++) {
-            for(j = 0; j < largura; j++) {
-                if (grid[i][j].getTipoCelula() == Celulas.a) {
-                    cadeiras[qnt_livres_temporario] = new Cadeira(j, i);
-                    qnt_livres_temporario++;
-                }
-            }
+        if (!validarCaminhosTransitaveis()) {  
+            throw new MapaNaoFormatadoException();
         }
     }
 
@@ -286,6 +319,57 @@ public class Grid {
         }
     }
 
+    private boolean validarCaminhosTransitaveis() {
+        int[][] distancias = calcularWavefront(gerador.getLinha(), gerador.getColuna(), mapaChar);
+
+        // totem e removedor sao celulas transitaveis
+        if (distancias[totem.getLinha()][totem.getColuna()] == -1 || distancias[removedor.getLinha()][removedor.getColuna()] == -1) {
+            return false;
+        }
+
+        // assentos: mesma logica, sao transitaveis
+        for (int i = 0; i < cadeiras.length; i++) {
+            if (distancias[cadeiras[i].getLinha()][cadeiras[i].getColuna()] == -1) {
+                return false;
+            }
+        }
+
+        // medicos e enfermeiras: o wavefront trata como parede (paciente nao pisa neles),
+        // entao valida se pelo menos um vizinho de chao foi alcancado
+        for (int i = 0; i < medico.length; i++) {
+            if (!temVizinhoAlcancavel(medico[i].getLinha(), medico[i].getColuna(), distancias)) {
+                return false;
+            }
+        }
+        for (int i = 0; i < enfermeira.length; i++) {
+            if (!temVizinhoAlcancavel(enfermeira[i].getLinha(), enfermeira[i].getColuna(), distancias)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean temVizinhoAlcancavel(int linha, int coluna, int[][] distancias) {
+        int[] distanciaLinha = {-1, 1, 0, 0};
+        int[] distanciaColuna = {0, 0, -1, 1};
+
+        for (int i = -1; i <= 1; i++) {
+            for(int j = -1; j <= 1; j++) {
+                int novaLinha = linha + i;
+                int novaColuna = coluna + j;
+
+                if (novaLinha >= 0 && novaLinha < altura && novaColuna >= 0 && novaColuna < largura) {
+                    if (!((i + j) % 2 == 0) && distancias[novaLinha][novaColuna] != -1) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     public Cadeira[] ordenarCadeirasPorDistancia(int[][] distancias) {
         //pega so as cadeiras livres pra ordenar
         Cadeira[] cadeirasLivres = filtrarCadeirasLivres();
@@ -316,7 +400,7 @@ public class Grid {
     //verifica se nao eh impossivel chegar
     //util para a ordenacao pois, se for impossivel chegar, coloca com o maior numero inteiro possivel
     public int distanciaReal(Cadeira cadeira, int[][] distancias) {
-        int distancia_real = distancias[cadeira.getY()][cadeira.getX()];
+        int distancia_real = distancias[cadeira.getLinha()][cadeira.getColuna()];
 
         if(distancia_real == -1) {
             distancia_real = Integer.MAX_VALUE;

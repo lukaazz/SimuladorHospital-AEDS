@@ -4,11 +4,15 @@ public class Totem {
     private int contadorPreferencial;
     private int contadorNormal;
     private boolean ocupado;
+    private int linha;
+    private int coluna;
 
-    public Totem() {
+    public Totem(int linha, int coluna) {
         contadorPreferencial = 0;
         contadorNormal = 0;
         ocupado = false;
+        this.linha = linha;
+        this.coluna = coluna;
     }
 
     public String gerarSenha(boolean preferencial) {
@@ -34,5 +38,13 @@ public class Totem {
     //talvez seja mais facil definir isso dps que o wavefront estiver pronto?
     public void setOcupado(boolean ocupado) {
         this.ocupado = ocupado;
+    }
+
+    public int getLinha() {
+        return linha;
+    }
+
+    public int getColuna() {
+        return coluna;
     }
 }
