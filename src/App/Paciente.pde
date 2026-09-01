@@ -54,7 +54,9 @@ public class Paciente {
         return caracteristicas[indice];
     }
     
-    
+    public boolean getPreferencial() {
+        return preferencial;
+    }
 
     public CoresPrioridades getCorPrioridade() {
         return corPrioridade;
