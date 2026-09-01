@@ -5,6 +5,7 @@ public static class ArvoreDeManchester {
 
     public static void preencheArvore() {
 
+        // instancia cada nó que vai ser utilizado na árvore (os de escolha e os que são folhas)
         arvoreManchester[0] = new NoManchester(3, 0);
         arvoreManchester[1] = new NoManchester(CoresPrioridades.VERMELHO);
         arvoreManchester[2] = new NoManchester(0, 92);
@@ -17,9 +18,9 @@ public static class ArvoreDeManchester {
     }
 
     public static CoresPrioridades decideCorPrioridade(Paciente paciente) {
-
         int i = 0;
 
+        // para os nós que não são folhas, enquanto ele não ultrapassar o limite, passa pelos nós da árvore 
         while(!(arvoreManchester[i].getEhFolha())) {
             if(arvoreManchester[i].ehMaiorLimite(paciente)) {
                 i = (2 * i) + 1;
@@ -27,6 +28,7 @@ public static class ArvoreDeManchester {
                 i = (2 * i) + 2;
             }
         }
+        // se atinge o limite retorna a cor da folha que parou
         return arvoreManchester[i].getCorFolha();
     }
 }

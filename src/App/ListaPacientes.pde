@@ -73,4 +73,18 @@ public class ListaPacientes {
 
         return false;
     }
+
+    public Paciente removerPrimeiro(){
+
+        if(this.vazia()){
+            return null;
+        }
+
+        Paciente primeiro = inicio.getPaciente();
+
+        this.inicio = this.inicio.getProximo(); 
+        tamanho--;
+
+        return primeiro;   
+    }
 }

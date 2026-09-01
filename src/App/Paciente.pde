@@ -10,8 +10,7 @@ public class Paciente {
     private String id;
     private double[] caracteristicas;
     private boolean preferencial;
-    private String senha;
-    private color corPrioridade;
+    private CoresPrioridades corPrioridade;
 
     private final Random rand = new Random();
 
@@ -31,6 +30,8 @@ public class Paciente {
         }
     }
 
+    
+
     private double[] gerarCaracteristicasAleatorias() {
         
         double[] c = new double[4];
@@ -48,13 +49,26 @@ public class Paciente {
         return caracteristicas[indice];
     }
     
-    public void setSenha(String senha) {
-        this.senha = senha;
+    
+
+    public CoresPrioridades getCorPrioridade() {
+        return corPrioridade;
     }
 
-    public String getSenha() {
-        return senha;
+    public void setCorPrioridade(CoresPrioridades cor) {
+        this.corPrioridade = cor;
     }
+
+
+    public String getId(){
+        return id;
+    }
+
+    public void setId(String id){
+        this.id = id;
+    }
+
+
 
     public int getLinha(){
         return linha;
