@@ -120,7 +120,8 @@ public class Paciente {
 
     public void iniciarConsulta(float tempoAtual) {
         this.tempoInicioAtendimento = tempoAtual;
-        this.duracaoAtendimento = GeradorTempo.gerarTempoConsulta();
+        GeradorTempo gerador = new GeradorTempo();
+        this.duracaoAtendimento = gerador.gerarTempoConsulta();
     }
 
     public void atualizar(float tempoAtual, Coordenada coordRemovedor, ListaPacientes listaPacientes) {
