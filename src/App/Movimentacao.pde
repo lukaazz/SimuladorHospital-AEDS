@@ -27,7 +27,12 @@ public class GerenciadorMovimento{
         if(candidatos.length == 0){
             return null; //nao tem pra onde ir
         }
-        return candidatos[0]; //melhor casa pra se mover (a q tem o menor numero pra chegar ao destino)
+        for(int i=0; i<candidatos.length; i++){ //serve pra conferir se a casa mais top ja esta ocupada
+            if(ocupacao[candidatos[i].getL()][candidatos[i].getC()] == null){
+                return candidatos[i]; //se nao tiver retorna ela
+            }
+        }
+        return null; //se sair do for e nao tiver nenhuma livre ele fica parado (null)
     }
 
     void atualizarMovimentacao(Paciente[] pacientesAtivos) {
