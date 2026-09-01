@@ -1,5 +1,4 @@
-public class EstadoPaciente {
-    public enum Estado {
+public enum EstadoPaciente {
     INDO_TOTEM,
     AGUARDANDO_TRIAGEM,
     INDO_TRIAGEM,
@@ -9,5 +8,4 @@ public class EstadoPaciente {
     EM_CONSULTA,
     INDO_SAIDA,
     FINALIZANDO
-}
 }
