@@ -1,4 +1,4 @@
-public class NoManchester {
+public static class NoManchester {
 
     private int indiceCaracteristica;
     private double valorLimite;

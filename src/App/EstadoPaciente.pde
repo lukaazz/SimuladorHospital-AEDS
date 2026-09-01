@@ -10,3 +10,4 @@ public class EstadoPaciente {
     INDO_SAIDA,
     FINALIZANDO
 }
+}

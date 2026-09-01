@@ -15,7 +15,7 @@ public class NoPaciente {
     { this.proximo = proximo; }
 }
 
-public class ListaPacientes {
+public static class ListaPacientes {
     private NoPaciente inicio;
     private int tamanho;
 
