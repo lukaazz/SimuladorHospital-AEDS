@@ -23,12 +23,15 @@ public static class FilasPreferencial {
         if(!(filas[PREFERENCIAL].vazia()) && preferenciaisAtendidos < LIMITE_ALTERNANCIA) {
             preferenciaisAtendidos++;
             return filas[PREFERENCIAL].removerPrimeiro();
-
-        } else if (!(filas[NORMAL].vazia())) {
-            preferenciaisAtendidos = 0;
-            return filas[NORMAL].removerPrimeiro();
-        } else {
-            if(!(filas[PREFERENCIAL].vazia())) return filas[PREFERENCIAL].removerPrimeiro();
         }
+
+        Paciente paciente = filas[NORMAL].removerPrimeiro(); 
+        
+        if(paciente != null) {
+            preferenciaisAtendidos = 0;
+            return paciente;
+        }
+
+        return filas[PREFERENCIAL].removerPrimeiro();
     }
 }
