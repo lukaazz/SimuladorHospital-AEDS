@@ -20,8 +20,13 @@ public class Paciente {
     private int destinoLinha;
     private int destinoColuna;
 
+    private EstadoPaciente estado;
+    private float tempoInicioAtendimento;
+    private float duracaoAtendimento;
+
     public Paciente(String id) {
         this.id = id;
+        this.estado = EstadoPaciente.INDO_TOTEM;
         this.caracteristicas = gerarCaracteristicasAleatorias();
 
         if(rand.nextDouble() < 0.25) {
@@ -87,5 +92,34 @@ public class Paciente {
             return true;
         }
         return false;
+    }
+
+    public EstadoPaciente getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoPaciente estado) {
+        this.estado = estado;
+    }
+
+    public void iniciarConsulta(float tempoAtual) {
+        this.tempoInicioAtendimento = tempoAtual;
+        this.duracaoAtendimento = GeradorTempo.gerarTempoConsulta();
+    }
+
+    public void atualizar(float tempoAtual, Coordenada coordRemovedor, ListaPacientes listaPacientes) {
+        if (this.estado == EstadoPaciente.EM_CONSULTA) {
+            if (tempoAtual - this.tempoInicioAtendimento >= this.duracaoAtendimento) {
+                this.estado = EstadoPaciente.INDO_SAIDA;
+                setDestino(coordRemovedor.linha, coordRemovedor.coluna);
+            }
+        }
+
+        if (this.estado == EstadoPaciente.INDO_SAIDA) {
+            if (chegouAoDestino()) {
+                this.estado = EstadoPaciente.FINALIZANDO;
+                listaPacientes.removerPorId(this.id);
+            }
+        }
     }
 }
