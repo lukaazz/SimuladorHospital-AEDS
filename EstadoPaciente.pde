@@ -1,4 +1,5 @@
-public enum EstadoPaciente {
+public class EstadoPaciente {
+    public enum Estado {
     INDO_TOTEM,
     AGUARDANDO_TRIAGEM,
     INDO_TRIAGEM,
