@@ -1,28 +1,17 @@
-int tamanho = 24;
-int largura_celula;
-int altura_celula;
-
 NoManchester[] ArvoreManchester;
 
-PImage chao_img = new PImage();
-PImage parede_img = new PImage();
-PImage cadeira_img = new PImage();
-PImage gerador_img = new PImage();
-PImage removedor_img = new PImage();
-PImage enfermeira_img = new PImage();
-PImage medico_img = new PImage();
-PImage totem_img = new PImage();
+Grid grid;
 
-CelulasGrid[][] grid = new CelulasGrid[tamanho][tamanho];
-Cadeira[] cadeiras = new Cadeira[30];
+//apenas teste, talvez a logica deva ser alterada
+boolean inicializado;
 
 void setup() {
     size(800, 800);
+    inicializado = false;
 
     grid = new Grid();
 
-    inicializarImagens();
-    inicializarGrid();
+    grid.inicializarImagens();
 
 
     /* 
