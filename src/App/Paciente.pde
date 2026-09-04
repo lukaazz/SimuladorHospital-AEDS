@@ -23,6 +23,8 @@ public class Paciente {
     private float tempoInicioAtendimento;
     private float duracaoAtendimento;
 
+
+
     public Paciente(String id) {
         this.id = id;
         this.estado = EstadoPaciente.INDO_TOTEM;
@@ -36,7 +38,6 @@ public class Paciente {
     }
 
     
-
     private double[] gerarCaracteristicasAleatorias() {
         
         double[] c = new double[4];
