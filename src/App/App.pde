@@ -3,7 +3,7 @@ NoManchester[] ArvoreManchester;
 Grid grid;
 
 //apenas teste, talvez a logica deva ser alterada
-boolean inicializado;
+boolean inicializado = false;
 
 void setup() {
     size(800, 800);
@@ -29,16 +29,17 @@ void draw() {
     background(255);
 
     if (!inicializado) {
-
         try {
             //vai ser chamado sempre que um mapa diferente for escolhido, para resetar o grid e desenhar o novo mapa
             grid.inicializarGrid("data/mapa1.txt");
+            inicializado = true;
 
         } catch (MapaNaoFormatadoException e) {
             println(e.getMessage());
         }
-        inicializado = true;
     }
 
-    grid.desenharGrid();
+    if(inicializado) {
+        grid.desenharGrid();
+    }
 }
